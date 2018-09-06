@@ -1,4 +1,3 @@
-# Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,17 +15,51 @@
 import logging
 
 # [START imports]
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,jsonify,session
+from src.common.database import Database
+from src.models.user import User
+
 # [END imports]
 
 # [START create_app]
 app = Flask(__name__)
+app.secret_key="harsh"
 # [END create_app]
 
 
 @app.route('/')
 def form1():
-    return render_template('index.html')
+    return render_template('index1.html')
+@app.before_first_request
+def initialize_database():
+    Database.initialize()
+
+@app.route('/auth/login',methods=['POST'])
+def login_user():
+    email=request.form['email']
+    password=request.form['password']
+
+
+    if User.login_valid(email,password):
+        User.login(email)
+        return jsonify(status="Success",email=email),200
+    else:
+        session['email']=None
+        return jsonify(status="Fail",error="Invalid Credentials"),200
+
+
+    return render_template("profile.html",email=session['email'])
+
+@app.route('/auth/register',methods=['POST'])
+def register_user():
+    email=request.form['email']
+    password=request.form['password']
+
+    if User.register(email,password):
+    	return jsonify(status="Success",email=email),200
+    else:
+    	return jsonify(status="Fail",error="User Already Exists"),200
+
 
 @app.errorhandler(500)
 def server_error(e):
