@@ -18,6 +18,8 @@ import logging
 from flask import Flask, render_template, request,jsonify,session
 from src.common.database import Database
 from src.models.user import User
+from src.models.readings import Readings
+from bson.json_util import dumps
 
 # [END imports]
 
@@ -60,6 +62,22 @@ def register_user():
     else:
     	return jsonify(status="Fail",error="User Already Exists"),200
 
+@app.route('/sendReadings',methods=['POST'])
+def push_readings():
+    latitude=request.form['latitude']
+    longitude=request.form['longitude']
+    cartID=request.form['cartID']
+    ir1=request.form['ir1']
+    ir2=request.form['ir2']
+
+    if Readings.push(cartID,latitude,longitude,ir1,ir2):
+        return jsonify(status="Success"),200
+    else:
+        return jsonify(status="Fail"),200
+
+@app.route('/getReadings',methods=['GET'])
+def get_readings():
+    return jsonify(data=dumps(Readings.get()))
 
 @app.errorhandler(500)
 def server_error(e):
@@ -71,4 +89,4 @@ def server_error(e):
 
 #uncomment these below lines so that you word locally
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(debug=True,host="0.0.0.0")
