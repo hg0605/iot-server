@@ -71,4 +71,4 @@ def server_error(e):
 
 #uncomment these below lines so that you word locally
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
