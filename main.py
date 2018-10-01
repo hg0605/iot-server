@@ -64,11 +64,11 @@ def register_user():
 
 @app.route('/sendReadings',methods=['POST'])
 def push_readings():
-    latitude=request.form['latitude']
-    longitude=request.form['longitude']
-    cartID=request.form['cartID']
-    ir1=request.form['ir1']
-    ir2=request.form['ir2']
+    latitude=request.json['latitude']
+    longitude=request.json['longitude']
+    cartID=request.json['cartID']
+    ir1=request.json['ir1']
+    ir2=request.json['ir2']
 
     if Readings.push(cartID,latitude,longitude,ir1,ir2):
         return jsonify(status="Success"),200
