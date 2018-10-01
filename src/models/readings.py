@@ -15,11 +15,12 @@ class Readings(object):
         self._id=uuid.uuid4().hex if _id is None else _id
         self.printdata=printdata
 
-    @classmethod
-    def get(cls):
+    @staticmethod
+    def get():
         data=Database.find("readings",{})
         if data is not None:
             return data
+    @staticmethod        
     def getCartReading(cartID):
         data=Database.find_one("readings",{"cartID":str(cartID)})
         if data is not None:
