@@ -21,7 +21,7 @@ class Database(object):
 
     @staticmethod
     def find_one(collection, query):
-        return Database.DATABASE[collection].find_one(query)
+        return Database.DATABASE[collection].find_one(query,sort=[( '$natural', -1 )])
 
     @staticmethod
     def update(collection,query1,query2):
