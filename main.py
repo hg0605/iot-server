@@ -75,9 +75,15 @@ def push_readings():
     else:
         return jsonify(status="Fail"),200
 
+
+
 @app.route('/getReadings',methods=['GET'])
 def get_readings():
     return jsonify(data=dumps(Readings.get()))
+
+@app.route('/getReading/<int:cart_id>',methods=['GET'])
+def get_reading(cart_id):
+    return jsonify(data=dumps(Readings.getCartReading(cart_id)))
 
 @app.errorhandler(500)
 def server_error(e):

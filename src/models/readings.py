@@ -20,8 +20,8 @@ class Readings(object):
         data=Database.find("readings",{})
         if data is not None:
             return data
-    def getCartReading(cls,cartID):
-        data=Database.find_one("readings",{"cartID":cartID})
+    def getCartReading(cartID):
+        data=Database.find_one("readings",{"cartID":str(cartID)})
         if data is not None:
             return data
 
