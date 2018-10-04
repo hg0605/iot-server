@@ -19,6 +19,7 @@ from flask import Flask, render_template, request,jsonify,session
 from src.common.database import Database
 from src.models.user import User
 from src.models.readings import Readings
+from src.models.directions import Directions
 from bson.json_util import dumps
 
 # [END imports]
@@ -75,6 +76,16 @@ def push_readings():
     else:
         return jsonify(status="Fail"),200
 
+@app.route('/sendDirection',methods=['POST'])
+def push_directions():
+    latitude=request.json['direction']
+    longitude=request.json['distance']
+    cartID=request.json['cartID']
+
+    if Directions.push(cartID,direction,distance):
+        return jsonify(status="Success"),200
+    else:
+        return jsonify(status="Fail"),200
 
 
 @app.route('/getReadings',methods=['GET'])
@@ -85,6 +96,10 @@ def get_readings():
 def get_reading(cart_id):
     return jsonify(data=dumps(Readings.getCartReading(cart_id)))
 
+@app.route('/getDirection/<int:cart_id>',methods=['GET'])
+def get_direction(cart_id):
+    return jsonify(data=dumps(Directions.getCartDirections(cart_id)))
+    
 @app.errorhandler(500)
 def server_error(e):
     # Log the error and stacktrace.
