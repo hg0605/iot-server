@@ -78,8 +78,8 @@ def push_readings():
 
 @app.route('/sendDirection',methods=['POST'])
 def push_directions():
-    latitude=request.json['direction']
-    longitude=request.json['distance']
+    direction=request.json['direction']
+    distance=request.json['distance']
     cartID=request.json['cartID']
 
     if Directions.push(cartID,direction,distance):
@@ -99,7 +99,7 @@ def get_reading(cart_id):
 @app.route('/getDirection/<int:cart_id>',methods=['GET'])
 def get_direction(cart_id):
     return jsonify(data=dumps(Directions.getCartDirections(cart_id)))
-    
+
 @app.errorhandler(500)
 def server_error(e):
     # Log the error and stacktrace.
