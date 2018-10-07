@@ -24,5 +24,9 @@ class Database(object):
         return Database.DATABASE[collection].find_one(query,sort=[( '$natural', -1 )])
 
     @staticmethod
+    def find_one_queue(collection, query):
+        return Database.DATABASE[collection].find_one(query)
+
+    @staticmethod
     def update(collection,query1,query2):
         return Database.DATABASE[collection].update(query1,{"$set":query2})
