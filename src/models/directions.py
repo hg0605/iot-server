@@ -32,6 +32,10 @@ class Directions(object):
             new_data.save_to_mongo()
             return True
 
+    def stopCart(cartID):
+        data=Database.update("directions",{"cartID":str(cartID),"sentStatus":"false"},{"sentStatus":"true"})
+        return data
+
     def json(self):
         return {
             "cartID":self.cartID,

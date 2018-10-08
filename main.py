@@ -87,6 +87,14 @@ def push_directions():
     else:
         return jsonify(status="Fail"),200
 
+@app.route('/stopCart',methods=['POST'])
+def stop_directions():
+    cartID=request.json['cartID']
+
+    if Directions.stopCart(cartID):
+        return jsonify(status="Success"),200
+    else:
+        return jsonify(status="Fail"),200
 
 @app.route('/getReadings',methods=['GET'])
 def get_readings():
