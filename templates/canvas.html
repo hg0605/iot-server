@@ -25,6 +25,7 @@ footer {
     margin-bottom:50px;
 }
 </style>
+
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -39,7 +40,7 @@ footer {
                       <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/canvas">About</a>
+                      <a class="nav-link" href="#">About</a>
                     </li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
@@ -49,13 +50,13 @@ footer {
                 </div>
               </nav>
 <div class="container">
-	<div class="jumbotron">
-                <h1 class="display-3">Smart Cart</h1>
-                <p class="lead">ReInventing the Cart for Smart Warehouses.</p>
-                <hr class="my-4">
-                <p>An Approach towards simplifying and improvising Distribution Centers</p>  
-                
-              </div>
+<br><br>
+<center>	
+<canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</center>
+
+
  
  
 </div>
@@ -93,5 +94,67 @@ footer {
 <footer class="container-fluid">
   <center><p>Copyright © SMART CART SAP Labs</p></center>
 </footer>	
+<script>
+var x=0;
+var y=0;
+var posX=100;
+var posY=400;
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.rect(20,20,460,460);
+ctx.stroke();
+window.onload = function() {
+ fetch("http://localhost:5000/getPosition/15").then(response => {
+  return response.json();
+}).then(data => {
+  // Work with JSON data here
+  //console.log(responseText);
+
+ var positionData=JSON.parse(data["data"]);
+ x=positionData.x;
+ y=positionData.y;
+ctx.moveTo(x+posX,posY-y);
+
+}).catch(err => {
+  // Do something for an error here
+});
+   
+};
+window.setInterval(function(){
+
+ 
+  fetch("http://localhost:5000/getPosition/15").then(response => {
+  return response.json();
+}).then(data => {
+  // Work with JSON data here
+  //console.log(responseText);
+
+ctx.arc(x+posX, posY-y, 4, 0, 2 * Math.PI);
+ctx.fillStyle = "#FFFFFF";
+ctx.fill();
+ctx.moveTo(x+posX,posY-y);
+
+ var positionData=JSON.parse(data["data"]);
+ x=positionData.x;
+ y=positionData.y;
+ctx.lineTo(x+posX,posY-y);
+ctx.fillStyle = "#000000";
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(x+posX, posY-y, 3, 0, 2 * Math.PI);
+ctx.fill();
+
+
+
+}).catch(err => {
+  // Do something for an error here
+});
+  
+  /// call your function here
+}, 5000);
+
+ 
+  </script>
 </body>
 </html>

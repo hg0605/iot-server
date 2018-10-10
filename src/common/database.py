@@ -30,3 +30,9 @@ class Database(object):
     @staticmethod
     def update(collection,query1,query2):
         return Database.DATABASE[collection].update(query1,{"$set":query2},multi=True)
+
+
+    @staticmethod
+    def remove(collection, query):
+        return Database.DATABASE[collection].remove(query)
+

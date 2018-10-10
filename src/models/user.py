@@ -8,9 +8,10 @@ from src.common.database import Database
 
 class User(object):
 
-    def __init__(self,email,password,_id=None,printdata="no"):
+    def __init__(self,email,password,name=None,_id=None,printdata="no"):
         self.email=email
         self.password=password
+        self.name=name
         self._id=uuid.uuid4().hex if _id is None else _id
         self.printdata=printdata
 
@@ -32,15 +33,16 @@ class User(object):
         user=User.get_by_email(email)
         if user is not None:
             print(user.email)
-            return user.password==password
-        return False
+            if(user.password==password):
+                return user.name
+        return None
 
 
     @classmethod
-    def register(cls,email,password):
+    def register(cls,name,email,password):
         user=cls.get_by_email(email)
         if user is None:
-            new_user=cls(email,password)
+            new_user=cls(email,password,name)
             new_user.save_to_mongo()
             session['email']=email
             return True
@@ -62,7 +64,8 @@ class User(object):
             "email":self.email,
             "_id":self._id,
             "printdata":self.printdata,
-        "password":self.password
+        "password":self.password,
+        "name":self.name
         }
 
     def save_to_mongo(self):

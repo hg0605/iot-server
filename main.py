@@ -33,6 +33,10 @@ app.secret_key="harsh"
 @app.route('/')
 def form1():
     return render_template('index1.html')
+@app.route('/canvas')
+def form2():
+    return render_template('canvas.html')
+
 @app.before_first_request
 def initialize_database():
     Database.initialize()
@@ -42,10 +46,10 @@ def login_user():
     email=request.form['email']
     password=request.form['password']
 
-
-    if User.login_valid(email,password):
+    name=User.login_valid(email,password)
+    if  name is not None:
         User.login(email)
-        return jsonify(status="Success",email=email),200
+        return jsonify(status="Success",email=email,name=name),200
     else:
         session['email']=None
         return jsonify(status="Fail",error="Invalid Credentials"),200
@@ -55,13 +59,16 @@ def login_user():
 
 @app.route('/auth/register',methods=['POST'])
 def register_user():
-    email=request.form['email']
-    password=request.form['password']
-
-    if User.register(email,password):
-    	return jsonify(status="Success",email=email),200
-    else:
-    	return jsonify(status="Fail",error="User Already Exists"),200
+#    try:
+        email=request.form['email']
+        password=request.form['password']
+        name=request.form['name']
+        if User.register(name,email,password):
+        	return jsonify(status="Success",email=email),200
+        else:
+        	return jsonify(status="Fail",error="User Already Exists"),200
+#    except:
+#        return jsonify(status="Fail",error="Wrong Parameters"),400
 
 @app.route('/sendReadings',methods=['POST'])
 def push_readings():
@@ -87,6 +94,14 @@ def push_directions():
     else:
         return jsonify(status="Fail"),200
 
+@app.route('/startCart',methods=['POST'])
+def start_cart():
+    cartID=request.json['cartID']
+    if Directions.startCart(cartID):
+        return jsonify(status="Success"),200
+    else:
+        return jsonify(status="Fail"),200
+
 @app.route('/stopCart',methods=['POST'])
 def stop_directions():
     cartID=request.json['cartID']
@@ -108,6 +123,10 @@ def get_reading(cart_id):
 def get_direction(cart_id):
     return jsonify(data=dumps(Directions.getCartDirections(cart_id)))
 
+@app.route('/getPosition/<int:cart_id>',methods=['GET'])
+def get_position(cart_id):
+    return jsonify({"data":dumps(Directions.getCartPosition(cart_id))})
+
 @app.errorhandler(500)
 def server_error(e):
     # Log the error and stacktrace.
@@ -118,4 +137,4 @@ def server_error(e):
 
 #uncomment these below lines so that you word locally
 if __name__ == "__main__":
-    app.run(debug=False,host="0.0.0.0",threaded=True)
+    app.run(debug=True,host="0.0.0.0",threaded=True)
