@@ -95,18 +95,7 @@ class Directions(object):
         data=Database.update("directions",{"cartID":str(cartID),"sentStatus":"false"},{"sentStatus":"true"})
         return data
 
-    def requestNewCart(email,prevCartID,cartID):
-        if(str(prevCartID)=="0"):
-            if(startCart(email,cartID)):
-                return True
-        else:
-            if(startCart(email,cartID)):
-                directions=Database.find("directions",{"cartID":str(prevCartID)})
-                if(direction is not None):
-                    for direction in directions:
-                        new_data=cls(cartID,direction.direction,direction.distance)
-                        new_data.save_to_mongo()
-
+                        
     def startCart(email,cartID):
         data=Database.find_one("cartPosition",{"cartID":str(cartID)})
         if(data is not None):
@@ -116,6 +105,22 @@ class Directions(object):
         
         data=Database.remove("directions",{"cartID":str(cartID)})
         return True
+    
+    def requestNewCart(email,prevCartID,cartID):
+        if(str(prevCartID)=="0"):
+            print(email)
+            print(cartID)
+            if Directions.startCart(email,cartID):
+                return True
+        else:
+            if(startCart(email,cartID)):
+                directions=Database.find("directions",{"cartID":str(prevCartID)})
+                if(direction is not None):
+                    for direction in directions:
+                        new_data=cls(cartID,direction.direction,direction.distance)
+                        new_data.save_to_mongo()
+
+   
 
     def json(self):
         return {

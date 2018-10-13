@@ -34,6 +34,10 @@ app.secret_key="harsh"
 def form1():
     return render_template('index1.html')
 
+@app.route('/admin')
+def form3():
+    return render_template('admin.html')
+
 @app.route('/canvas')
 def form2():
     return render_template('canvas.html')
