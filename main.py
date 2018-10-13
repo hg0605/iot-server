@@ -33,6 +33,7 @@ app.secret_key="harsh"
 @app.route('/')
 def form1():
     return render_template('index1.html')
+
 @app.route('/canvas')
 def form2():
     return render_template('canvas.html')
@@ -97,7 +98,9 @@ def push_directions():
 @app.route('/startCart',methods=['POST'])
 def start_cart():
     cartID=request.json['cartID']
-    if Directions.startCart(cartID):
+    email=request.json['email']
+    prevCartID=request.json['prevCartID']
+    if Directions.requestNewCart(email,prevCartID,cartID):
         return jsonify(status="Success"),200
     else:
         return jsonify(status="Fail"),200
