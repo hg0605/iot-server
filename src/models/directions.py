@@ -109,10 +109,10 @@ class Directions(object):
 
     @staticmethod
     def requestNewCart(email,prevCartID,cartID):
+        data=Database.update("users",{"email":email},{"currentCart":cartID})
         if(str(prevCartID)=="0"):
             print(email)
             print(cartID)
-            data=Database.update("users",{"email":email},{"currentCart":cartID})
             if Directions.startCart(email,cartID):
                 return True
         else:
