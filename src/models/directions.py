@@ -41,51 +41,51 @@ class Directions(object):
             y=int(positionData['y'])
             distance=int(distance)
             if(position=='+x'):
-                if(direction=='right'):
+                if(direction=='Right'):
                     y=y-distance
                     position="-y"
 
-                elif(direction=='left'):
+                elif(direction=='Left'):
                     y=y+distance
                     position="+y"
 
-                elif(direction=='straight'):
+                elif(direction=='Straight'):
                     x=x+distance
 
             elif(position=='-x'):
-                if(direction=='right'):
+                if(direction=='Right'):
                     y=y+distance
                     position="+y"
 
-                elif(direction=='left'):
+                elif(direction=='Left'):
                     y=y-distance
                     position="-y"
 
-                elif(direction=='straight'):
+                elif(direction=='Straight'):
                     x=x-distance
 
             elif(position=='+y'):
-                if(direction=='right'):
+                if(direction=='Right'):
                     x=x+distance
                     position="+x"
 
-                elif(direction=='left'):
+                elif(direction=='Left'):
                     x=x-distance
                     position="-x"
 
-                elif(direction=='straight'):
+                elif(direction=='Straight'):
                     y=y+distance
 
             elif(position=='-y'):
-                if(direction=='right'):
+                if(direction=='Right'):
                     x=x-distance
                     position="-x"
 
-                elif(direction=='left'):
+                elif(direction=='Left'):
                     x=x+distance
                     position="+x"
 
-                elif(direction=='straight'):
+                elif(direction=='Straight'):
                     y=y-distance
 
             positionData=Database.update("cartPosition",positionData,{"position":position,"x":x,"y":y})
