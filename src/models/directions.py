@@ -121,7 +121,8 @@ class Directions(object):
                     for direction in directions:
                         new_data=Directions(cartID,direction['direction'],direction['distance'])
                         new_data.save_to_mongo()
-
+            return True
+        return False
    
     def json(self):
         return {
