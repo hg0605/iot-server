@@ -8,12 +8,13 @@ from src.common.database import Database
 
 class User(object):
 
-    def __init__(self,email,password,name=None,_id=None,printdata="no"):
+    def __init__(self,email,password,name=None,_id=None,printdata="no",currentCart=0):
         self.email=email
         self.password=password
         self.name=name
         self._id=uuid.uuid4().hex if _id is None else _id
         self.printdata=printdata
+        self.currentCart=currentCart
 
     @classmethod
     def get_by_email(cls,email):
