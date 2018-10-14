@@ -57,7 +57,9 @@ fetch("/getPosition/{{user.currentCart}}").then(response => {
 
  var positionData=JSON.parse(data["data"]);
  x=positionData.x;
+ x=x/5;
  y=positionData.y;
+ y=y/5;
 ctx.moveTo(x+posX,posY-y);
 
 });
@@ -77,7 +79,9 @@ ctx.moveTo(x+posX,posY-y);
 
  var positionData=JSON.parse(data["data"]);
  x=positionData.x;
+ x=x/5;
  y=positionData.y;
+ y=y/5;
 ctx.lineTo(x+posX,posY-y);
 ctx.fillStyle = "#000000";
 ctx.stroke();
