@@ -15,9 +15,10 @@
 import logging
 
 # [START imports]
-from flask import Flask, render_template, request,jsonify,session
+from flask import Flask, render_template, request,jsonify,session,redirect, url_for
 from src.common.database import Database
 from src.models.user import User
+from src.models.admin import Admin
 from src.models.readings import Readings
 from src.models.directions import Directions
 from bson.json_util import dumps
@@ -34,9 +35,11 @@ app.secret_key="harsh"
 def form1():
     return render_template('index1.html')
 
-@app.route('/admin')
+@app.route('/dashboard')
 def form3():
-    return render_template('admin.html')
+    users=Admin.fetchUsers(session['adminemail'])
+    print(users)
+    return render_template('dashboard.html',users=users)
 
 @app.route('/canvas')
 def form2():
@@ -45,6 +48,27 @@ def form2():
 @app.before_first_request
 def initialize_database():
     Database.initialize()
+
+
+@app.route('/admin_login',methods=['POST'])
+def login_admin():
+    email=request.form['email']
+    password=request.form['pwd']
+
+    name=Admin.login_valid(email,password)
+    if  name is not None:
+        Admin.login(email)
+        return redirect(url_for('form3'))
+    else:
+        session['adminemail']=None
+    print(session['adminemail'])
+    return redirect(url_for('form1'))
+
+@app.route('/logout')
+def logout_admin():
+    Admin.logout()
+    return redirect(url_for('form1'))
+
 
 @app.route('/auth/login',methods=['POST'])
 def login_user():
@@ -144,4 +168,6 @@ def server_error(e):
 
 #uncomment these below lines so that you word locally
 if __name__ == "__main__":
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(debug=True,host="0.0.0.0",threaded=True)
