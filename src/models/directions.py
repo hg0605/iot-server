@@ -119,7 +119,7 @@ class Directions(object):
                 directions=Database.find("directions",{"cartID":str(prevCartID)})
                 if(directions is not None):
                     for direction in directions:
-                        new_data=Directions(cartID,direction.direction,direction.distance)
+                        new_data=Directions(cartID,direction['direction'],direction['distance'])
                         new_data.save_to_mongo()
 
    
