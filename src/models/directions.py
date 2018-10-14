@@ -117,7 +117,7 @@ class Directions(object):
         else:
             if(Directions.startCart(email,cartID)):
                 directions=Database.find("directions",{"cartID":str(prevCartID)})
-                if(direction is not None):
+                if(directions is not None):
                     for direction in directions:
                         new_data=cls(cartID,direction.direction,direction.distance)
                         new_data.save_to_mongo()
