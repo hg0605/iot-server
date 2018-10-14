@@ -33,7 +33,7 @@ class Directions(object):
         return data
     @classmethod
     def push(cls,cartID,direction,distance):       
-            new_data=cls(cartID,direction,distance)
+            new_data=cls(str(cartID),direction,distance)
             new_data.save_to_mongo()
             positionData=Database.find_one("cartPosition",{"cartID":str(cartID)})
             position=positionData['position']
