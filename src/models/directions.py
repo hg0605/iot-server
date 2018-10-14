@@ -112,6 +112,7 @@ class Directions(object):
         if(str(prevCartID)=="0"):
             print(email)
             print(cartID)
+            data=Database.update("users",{"email":email},{"currentCart":cartID})
             if Directions.startCart(email,cartID):
                 return True
         else:
