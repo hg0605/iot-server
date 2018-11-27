@@ -21,7 +21,7 @@ from src.models.user import User
 from src.models.admin import Admin
 from src.models.readings import Readings
 from src.models.directions import Directions
-from bson.json_util import dumps
+from bson.json_util import dumps,loads
 
 # [END imports]
 
@@ -36,10 +36,14 @@ def form1():
     return render_template('index1.html')
 
 @app.route('/dashboard')
-def form3():
+def form3(enableMaterial=True):
     users=Admin.fetchUsers(session['adminemail'])
+    if enableMaterial==True:
+        materials=Admin.fetchDelivery()
+    else:
+        materials=[]
     print(users)
-    return render_template('dashboard.html',users=users)
+    return render_template('dashboard.html',users=list(users),materials=materials)
 
 @app.route('/canvas')
 def form2():
@@ -120,6 +124,22 @@ def push_directions():
 
     if Directions.push(cartID,direction,distance):
         return jsonify(status="Success"),200
+    else:
+        return jsonify(status="Fail"),200
+
+@app.route('/assignDelivery',methods=['POST'])
+def assign_delivery():
+    user_email=request.form['user_email']
+    if Admin.assignDelivery(user_email):
+        return form3(False)
+    else:
+        return jsonify(status="Fail"),200
+
+@app.route('/getDelivery',methods=['POST'])
+def get_delivery():
+    user_email=request.json['user_email']
+    if User.get_delivery(user_email):
+        return jsonify(status="Success",data=dumps(User.get_delivery(user_email)))
     else:
         return jsonify(status="Fail"),200
 

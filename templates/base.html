@@ -38,9 +38,11 @@ footer {
                     <li class="nav-item active">
                       <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
+                    {% if session['adminemail'] %}
                     <li class="nav-item">
-                      <a class="nav-link" href="/canvas">About</a>
+                      <a class="nav-link" href="/dashboard">Dashboard</a>
                     </li>
+                    {% endif %}
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
       {% if session['adminemail'] %}

@@ -30,6 +30,12 @@ class User(object):
             return cls(**data)
 
     @staticmethod
+    def get_delivery(email):
+        data=Database.find_one("delivery",{"user_email":email})
+        if data is not None:
+            return data
+
+    @staticmethod
     def login_valid(email,password):
         user=User.get_by_email(email)
         if user is not None:

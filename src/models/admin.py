@@ -1,6 +1,6 @@
 import datetime
 import uuid
-
+import xml.etree.ElementTree,json
 from flask import session
 
 from src.common.database import Database
@@ -27,6 +27,31 @@ class Admin(object):
         data=Database.find_one("admin",{"_id":_id})
         if data is not None:
             return cls(**data)
+
+
+    @staticmethod
+    def fetchDelivery():
+        e = xml.etree.ElementTree.parse('thefile2.xml').getroot()
+        materials=[]
+        for elem in e.iter('{http://schemas.microsoft.com/ado/2007/08/dataservices/metadata}properties'):
+            material=elem.find('{http://schemas.microsoft.com/ado/2007/08/dataservices}Material').text
+            quantity=elem.find('{http://schemas.microsoft.com/ado/2007/08/dataservices}OriginalDeliveryQuantity').text
+            materials.append(json.loads('{"Material":"'+material+'","Quantity":"'+quantity+'"}'))
+        return materials
+
+    @staticmethod
+    def assignDelivery(user_email):
+        e = xml.etree.ElementTree.parse('thefile2.xml').getroot()
+        materials=[]
+        for elem in e.iter('{http://schemas.microsoft.com/ado/2007/08/dataservices/metadata}properties'):
+            material=elem.find('{http://schemas.microsoft.com/ado/2007/08/dataservices}Material').text
+            quantity=elem.find('{http://schemas.microsoft.com/ado/2007/08/dataservices}OriginalDeliveryQuantity').text
+            materials.append(json.loads('{"Material":"'+material+'","Quantity":"'+quantity+'"}'))
+        if(user_email is not None):
+            Database.update("delivery",{"user_email":user_email},{"materials":materials})
+            return True
+        else:
+            return False
 
 
     @staticmethod
