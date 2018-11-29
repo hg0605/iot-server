@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Smart Cart</title>
+<title>Connected Trolley</title>
 <!-- Latest compiled and minified CSS -->
  <link href="../static/bootstrap/css/bootstrap_lux.min.css" rel="stylesheet">
 
@@ -28,7 +28,8 @@ footer {
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <a class="navbar-brand" href="#">Smart Cart</a>
+                <a class="navbar-brand" href="/">Connected Trolley</a>
+                <img src="/static/img/teched.png">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
@@ -36,7 +37,7 @@ footer {
                 <div class="collapse navbar-collapse" id="navbarColor01">
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
                     {% if session['adminemail'] %}
                     <li class="nav-item">
@@ -91,7 +92,7 @@ footer {
               </div>
 
 <footer class="container-fluid">
-  <center><p>Copyright © SMART CART SAP Labs</p></center>
+  <center><p>Copyright © Connected Trolley SAP</p></center>
 </footer> 
 </body>
 </html>
